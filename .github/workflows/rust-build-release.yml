@@ -23,3 +23,11 @@ jobs:
       run: cargo check
     - name: Build release
       run: cargo build --release
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: |
+          target/release/diceware
+          target/release/diceware(.exe|.deb|.app)?
+          !target/release/diceware.(pdb|d$)
