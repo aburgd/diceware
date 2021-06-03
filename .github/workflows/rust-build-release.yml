@@ -22,7 +22,7 @@ jobs:
     - name: Run check
       run: cargo check
     - name: Build release
-      run: cargo build --release
+      run: cargo build --release -vv
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
