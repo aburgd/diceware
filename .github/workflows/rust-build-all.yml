@@ -1,0 +1,49 @@
+name: Release builds
+
+on:
+  push:
+    branches: [ main ]
+  pull_requests:
+    branches: [ main ]
+
+jobs:
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run check
+        run: cargo check
+      - name: Build release
+        run: cargo build --release -v
+      - run: ls target/release
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-win-artifact
+          path: target/release/diceware.exe
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run check
+        run: cargo check
+      - name: Build release
+        run: cargo build --release -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-mac-artifact
+          path: target/release/diceware
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run check
+        run: cargo check
+      - name: Build release
+        run: cargo build --release -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ubuntu-artifact
+          path: target/release/diceware
