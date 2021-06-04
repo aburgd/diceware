@@ -28,7 +28,7 @@ jobs:
         with:
           prerelease: true
           name: ${{ github.job }}
-          tag: ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
           files: | 
             target/release/diceware
             target/release/diceware.exe
