@@ -27,8 +27,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           prerelease: true
-          name: ${{ github.job }}
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          # name: ${{ github.job }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}-${{matrix.os}}
           files: | 
             target/release/diceware
             target/release/diceware.exe
