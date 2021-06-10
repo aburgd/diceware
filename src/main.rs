@@ -1,8 +1,11 @@
 use std::time::Instant;
 use tiny_die::Die;
 use std::collections::HashMap;
+use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::time::Instant;
+use tiny_die::Die;
 
 // read eff_large_wordlist.txt line by line
 // while reading each line, add each pair to collection/map
@@ -17,7 +20,10 @@ fn read_list_to_map(filename: &str) -> CombinationMap {
     for (_, line) in reader.lines().enumerate() {
         let line: String = line.unwrap();
         let mut iter = line.split_whitespace();
-        combinations.insert(String::from(iter.next().unwrap()), String::from(iter.next().unwrap()));
+        combinations.insert(
+            String::from(iter.next().unwrap()),
+            String::from(iter.next().unwrap()),
+        );
     }
     return combinations;
 }
@@ -31,7 +37,9 @@ fn dice_combination() -> String {
         let dice_roll: &str = &dee_six.roll().to_string().to_owned()[..];
         rolled_combo.push_str(dice_roll);
         counter -= 1;
-        if counter == 0 { break; }
+        if counter == 0 {
+            break;
+        }
     }
 
     return rolled_combo;
@@ -51,7 +59,9 @@ fn main() {
         passphrase += word;
         passphrase += " ";
         word_count -= 1;
-        if word_count == 0 { break; }
+        if word_count == 0 {
+            break;
+        }
     }
 
     println!("Time to generate: {:?}\n", Instant::now() - start);
