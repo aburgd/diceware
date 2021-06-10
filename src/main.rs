@@ -1,5 +1,3 @@
-use std::time::Instant;
-use tiny_die::Die;
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
@@ -12,6 +10,7 @@ use tiny_die::Die;
 // dice combo: word
 
 type CombinationMap = HashMap<String, String>;
+type RollPhrasePair = (Vec<String>, String);
 
 fn read_list_to_map(filename: &str) -> CombinationMap {
     let file = File::open(filename).unwrap();
@@ -45,12 +44,11 @@ fn dice_combination() -> String {
     return rolled_combo;
 }
 
-fn main() {
-    let start = Instant::now();
+fn make_passphrase() -> RollPhrasePair {
     let combo_map: CombinationMap = read_list_to_map("eff_large_wordlist.txt");
     let mut passphrase: String = String::new();
     let mut rolls: Vec<String> = Vec::new();
-    let mut word_count: u8 = 4;
+    let mut word_count: u8 = 5; // actual word count minus 1 because iteration
 
     loop {
         let dice_rolls: String = dice_combination();
@@ -64,13 +62,39 @@ fn main() {
         }
     }
 
-    println!("Time to generate: {:?}\n", Instant::now() - start);
+    return (rolls, passphrase);
+}
 
-    println!("Your passphrasse:");
-    println!("{}\n", passphrase);
+fn main() {
+    let start = Instant::now();
+    let args: Vec<String> = env::args().collect();
 
-    println!("Your rolls:");
-    for roll in rolls {
-        println!("{}", roll);
+    if args.len() == 1 {
+        let roll_phrase: RollPhrasePair = make_passphrase();
+        println!("\nYour passphrase:");
+        println!("{}\n", roll_phrase.1);
+
+        println!("Your rolls:");
+        for roll in roll_phrase.0 {
+            println!("{}", roll);
+        }
+    } else {
+        let mut passphrase_count: u8 = args[1].parse::<u8>().unwrap();
+        loop {
+            let roll_phrase: RollPhrasePair = make_passphrase();
+            println!("\nYour passphrase:");
+            println!("{}\n", roll_phrase.1);
+
+            println!("Your rolls:");
+            for roll in roll_phrase.0 {
+                println!("{}", roll);
+            }
+            passphrase_count -= 1;
+            if passphrase_count == 0 {
+                break;
+            }
+        }
     }
+
+    println!("\nTime to generate: {:?}", Instant::now() - start);
 }
