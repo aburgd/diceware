@@ -3,7 +3,6 @@ use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::time::Instant;
-use std::option::Option;
 use tiny_die::Die;
 
 // read eff_large_wordlist.txt line by line
@@ -45,11 +44,11 @@ fn dice_combination() -> String {
     return rolled_combo;
 }
 
-fn make_passphrase(word_count: Option<u8>) -> RollPhrasePair {
+fn make_passphrase(word_count: u8) -> RollPhrasePair {
     let combo_map: CombinationMap = read_list_to_map("eff_large_wordlist.txt");
     let mut passphrase: String = String::new();
     let mut rolls: Vec<String> = Vec::new();
-    let mut word_count: u8 = word_count.unwrap_or(5);
+    let mut word_count: u8 = word_count;
 
     loop {
         let dice_rolls: String = dice_combination();
@@ -69,7 +68,7 @@ fn make_passphrase(word_count: Option<u8>) -> RollPhrasePair {
 fn main() {
     let start = Instant::now();
     let args: Vec<String> = env::args().collect();
-    let word_count: Option<u8> = Some(args[1].parse::<u8>().unwrap());
+    let word_count = if args.len() > 1 { args[1].parse().unwrap() } else { 5 };
     let roll_phrase: RollPhrasePair = make_passphrase(word_count);
         println!("\nYour passphrase:");
         println!("{}\n", roll_phrase.1);
