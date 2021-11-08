@@ -30,7 +30,7 @@ fn read_list_to_map(filename: &str) -> CombinationMap {
 fn dice_combination() -> String {
     let dee_six: Die = Die::default();
     let mut rolled_combo: String = String::new();
-    let mut counter = 5;
+    let mut counter: i32 = 5;
 
     loop {
         let dice_roll: &str = &dee_six.roll().to_string().to_owned()[..];
