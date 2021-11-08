@@ -44,11 +44,10 @@ fn dice_combination() -> String {
     return rolled_combo;
 }
 
-fn make_passphrase(word_count: u8) -> RollPhrasePair {
+fn make_passphrase(mut word_count: u8) -> RollPhrasePair {
     let combo_map: CombinationMap = read_list_to_map("eff_large_wordlist.txt");
     let mut passphrase: String = String::new();
     let mut rolls: Vec<String> = Vec::new();
-    let mut word_count: u8 = word_count;
 
     loop {
         let dice_rolls: String = dice_combination();
