@@ -13,21 +13,21 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-  create_release:
+  create_artifacts:
+    container: rust:slim
     name: Build on release
     needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout latest
       uses: actions/checkout@v2
-    - name: Generate
-      uses: skx/github-action-build@master
-      with:
-        builder: .github/build
+    - name: Build release artifacts
+      run: ./.github/build
+      shell: bash
   
   upload_artifacts:
     name: Upload artifacts
-    needs: create_release
+    needs: create_artifacts
     runs-on: ubuntu-latest
     steps:
     - name: Upload the artifacts
