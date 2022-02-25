@@ -1,0 +1,39 @@
+name: Handle release
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: cargo test --verbose
+
+  create_release:
+    name: Build on release
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout latest
+      uses: actions/checkout@v2
+    - name: Generate
+      uses: skx/github-action-build@master
+      with:
+        builder: .github/build
+  
+  upload_artifacts:
+    name: Upload artifacts
+    needs: create_release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload the artifacts
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        releaseId: ${{ github.event.release.tag_name }}
+        args: 'target/release/dice*'
