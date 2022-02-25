@@ -22,7 +22,7 @@ jobs:
     - name: Checkout latest
       uses: actions/checkout@v2
     - name: Build release artifacts
-      run: ./.github/build
+      run: ./.github/scripts/build
       shell: bash
   
   upload_artifacts:
